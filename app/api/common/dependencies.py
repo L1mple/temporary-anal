@@ -1,6 +1,8 @@
 from dependency_injector import containers, providers
 from fastapi import FastAPI
 
+from app.service.postgres.common.settings import PostgresSettings
+
 from .settings import FastAPISettings
 
 
@@ -30,3 +32,8 @@ class Container(containers.DeclarativeContainer):
     """
 
     fastapi_settings = providers.Object(FastAPISettings())
+    postgres_settings = providers.Object(PostgresSettings())
+
+    postgres_db = providers.AbstractSingleton()
+
+    commit_repository = providers.AbstractFactory()

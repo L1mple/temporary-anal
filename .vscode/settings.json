@@ -24,6 +24,16 @@
         "yastyleguide",
         "pydantic",
         "toolz",
+        "sqlalchemy",
+        "DBAPI",
+        "poolclass",
+        "asyncpg",
+        "sessionmaker",
+        "aiohttp",
+        "onupdate",
+        "selectin",
+        "backref",
+        "ondelete",
     ],
     // Uncomment and configure section below for custom commmit message format. It helps
     // to write formatted commit messages, but does not validate them.
