@@ -5,16 +5,19 @@ class PostgresSettings(BaseSettings):
     """Settings for postgres database."""
 
     USER: str = Field(
+        default="root",
         description="Username of postgres user",
     )
     PASSWORD: SecretStr = Field(
+        default="root",
         description="Password for postgres user",
     )
     DB: str = Field(
+        default="analytics",
         description="Name of maintaining database",
     )
     HOST: str = Field(
-        default="localhost",
+        default="postgres",
         description="Host name of postgres db",
     )
     PORT: int = Field(

@@ -25,11 +25,11 @@ class IssueEntity(Base):
         nullable=False,
     )
     created_at = sa.Column(
-        sa.TIMESTAMP(False),
+        sa.TIMESTAMP(True),
         nullable=False,
     )
     closed_at = sa.Column(
-        sa.TIMESTAMP(False),
+        sa.TIMESTAMP(True),
         nullable=True,
     )
     labels: Mapped[list[LabelEntity]] = relationship(

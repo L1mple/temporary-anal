@@ -3,10 +3,10 @@ import sqlalchemy as sa
 from app.service.postgres.common.base import Base
 
 
-class PullRequestEntity(Base):
+class ProjectEntity(Base):
     """Entity for database relation."""
 
-    __tablename__ = "pull_request"
+    __tablename__ = "project"
 
     uid = sa.Column(
         sa.INTEGER,
@@ -14,21 +14,9 @@ class PullRequestEntity(Base):
         primary_key=True,
         nullable=False,
     )
-    project_id = sa.Column(
-        sa.INTEGER,
+    links = sa.Column(
+        sa.ARRAY(sa.String),
         nullable=False,
-    )
-    author_login = sa.Column(
-        sa.VARCHAR,
-        nullable=False,
-    )
-    created_at = sa.Column(
-        sa.TIMESTAMP(True),
-        nullable=False,
-    )
-    closed_at = sa.Column(
-        sa.TIMESTAMP(True),
-        nullable=True,
     )
     updated_at = sa.Column(
         sa.TIMESTAMP(True),

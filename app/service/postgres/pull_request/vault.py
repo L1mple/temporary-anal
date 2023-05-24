@@ -1,57 +1,61 @@
 from sqlalchemy import delete, select
 
-from app.core.commit.models import Commit
-from app.core.commit.vault import AbstractCommitVault
-from app.service.postgres.commit.entity import CommitEntity
+from app.core.pull_request.models import PullRequest
+from app.core.pull_request.vault import AbstractPullRequestVault
+from app.service.postgres.pull_request.entity import PullRequestEntity
 
 
-class CommitPostgresVault(AbstractCommitVault):
+class PullRequestPostgresVault(AbstractPullRequestVault):
     """Implementation of abstract vault."""
 
     def __init__(self, db_session) -> None:
         self.db_session = db_session
 
-    async def create(self, model: Commit):
+    async def create(self, model: PullRequest):
         """Implementation of abstract method."""
-        entity_to_create = CommitEntity(**model.dict())
+        entity_to_create = PullRequestEntity(**model.dict())
         async with self.db_session() as session:
             session.add(entity_to_create)
             await session.commit()
 
-    async def read(self, uid: int) -> Commit:
+    async def read(self, uid: int) -> PullRequest:
         """Implementation of abstract method."""
         async with self.db_session() as session:
             entity = (
-                await session.select(CommitEntity)
-                .where(CommitEntity.uid == uid)
+                await session.select(PullRequestEntity)
+                .where(PullRequestEntity.uid == uid)
                 .first()
             )
-            return Commit(entity)
+            return PullRequest(entity)
 
-    async def read_all(self, project_uid: int) -> list[Commit]:
+    async def read_all(self, project_uid: int) -> list[PullRequest]:
         """Implementation of abstract method."""
         async with self.db_session() as session:
-            query = select(CommitEntity).where(CommitEntity.project_id == project_uid)
+            query = select(PullRequestEntity).where(
+                PullRequestEntity.project_id == project_uid
+            )
             commit_list = await session.execute(query)
             return commit_list.scalars().all()
 
-    async def update(self, model: Commit):
+    async def update(self, model: PullRequest):
         """Implementation of abstract method."""
         async with self.db_session() as session:
-            await session.update(CommitEntity).where(
-                CommitEntity.uid == model.uid
+            await session.update(PullRequestEntity).where(
+                PullRequestEntity.uid == model.uid
             ).values(model.dict())
             await session.commit()
 
     async def delete(self, uid: int):
         """Implementation of abstract method."""
         async with self.db_session() as session:
-            await session.delete(CommitEntity).where(CommitEntity.uid == uid)
+            await session.delete(PullRequestEntity).where(PullRequestEntity.uid == uid)
             await session.commit()
 
     async def delete_by_project(self, project_uid: int):
         """Implementation of abstract method."""
         async with self.db_session() as session:
-            query = delete(CommitEntity).where(CommitEntity.project_id == project_uid)
+            query = delete(PullRequestEntity).where(
+                PullRequestEntity.project_id == project_uid
+            )
             await session.execute(query)
             await session.commit()

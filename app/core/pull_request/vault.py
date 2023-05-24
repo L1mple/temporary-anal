@@ -25,3 +25,7 @@ class AbstractPullRequestVault(Protocol):
     async def delete(self, uid: int):
         """Abstract method in generic repository."""
         raise NotImplementedError
+
+    async def delete_by_project(self, project_uid: int):
+        """Abstract method in generic repository."""
+        raise NotImplementedError

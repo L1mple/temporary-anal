@@ -37,3 +37,11 @@ class Container(containers.DeclarativeContainer):
     postgres_db = providers.AbstractSingleton()
 
     commit_repository = providers.AbstractFactory()
+    project_repository = providers.AbstractFactory()
+    pull_request_repository = providers.AbstractFactory()
+    issue_repository = providers.AbstractFactory()
+
+    commit_service = providers.AbstractSingleton()
+    project_service = providers.AbstractSingleton()
+    pull_request_service = providers.AbstractSingleton()
+    issue_service = providers.AbstractSingleton()

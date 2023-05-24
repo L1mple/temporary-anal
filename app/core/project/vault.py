@@ -1,31 +1,27 @@
 from typing import Protocol
 
-from app.core.commit.models import Commit
+from app.core.project.models import Project
 
 
-class AbstractCommitVault(Protocol):
-    """Abstract class for commit vault."""
+class AbstractProjectVault(Protocol):
+    """Abstract class for Project vault."""
 
-    async def create(self, model: Commit):
+    async def create(self, model: Project):
         """Abstract method in generic repository."""
         raise NotImplementedError
 
-    async def read(self, uid: int) -> Commit:
+    async def read(self, uid: int) -> Project:
         """Abstract method in generic repository."""
         raise NotImplementedError
 
-    async def read_all(self, project_uid: int) -> list[Commit]:
+    async def read_all(self) -> list[Project]:
         """Abstract method in generic repository."""
         raise NotImplementedError
 
-    async def update(self, model: Commit):
+    async def update(self, model: Project):
         """Abstract method in generic repository."""
         raise NotImplementedError
 
     async def delete(self, uid: int):
-        """Abstract method in generic repository."""
-        raise NotImplementedError
-
-    async def delete_by_project(self, project_uid: int):
         """Abstract method in generic repository."""
         raise NotImplementedError

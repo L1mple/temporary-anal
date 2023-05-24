@@ -9,10 +9,10 @@ uid = int
 class Auditable(BaseModel):
     """Base class for auditable entities."""
 
-    updated_at: datetime = Field(default_factory=datetime.now())
+    updated_at: datetime = Field(default=datetime.now())
 
 
 class Entity(BaseModel):
     """Base class for all entities that have uid(id)."""
 
-    uid: int
+    uid: int | None
