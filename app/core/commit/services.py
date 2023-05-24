@@ -8,8 +8,11 @@ from app.common.errors import ExternalAPI
 from app.core.commit.models import Commit
 from app.core.project.models import Project
 from app.core.project.services import AbstractProjectService
+from app.service.postgres.common.settings import PostgresSettings
 
 from .vault import AbstractCommitVault
+
+config = PostgresSettings()
 
 
 class AbstractCommitService(Protocol):
@@ -54,9 +57,6 @@ class DatabaseCommitService(AbstractCommitService):
             async with ClientSession() as session:
                 async with session.get(
                     url=f"http://217.197.0.155/data/projects/project?id={project_uid}",
-                    headers={
-                        "Authorization": "Bearer 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"
-                    },
                 ) as response:
                     if response.status == 404:
                         raise HTTPException(
@@ -98,7 +98,7 @@ class DatabaseCommitService(AbstractCommitService):
                     async with session.get(
                         url=link + f"/commits?per_page=100&page={page}",
                         headers={
-                            "Authorization": "Bearer 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",
+                            "Authorization": f"Bearer {config.TOKEN}",
                         },
                     ) as response:
                         if response.status != 200:

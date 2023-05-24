@@ -39,7 +39,7 @@ class IssueEntity(Base):
         lazy="joined",
     )
     updated_at = sa.Column(
-        sa.TIMESTAMP(True),
+        sa.TIMESTAMP(False),
         nullable=False,
         server_default=sa.func.now(),
         server_onupdate=sa.func.now(),

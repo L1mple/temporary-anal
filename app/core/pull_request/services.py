@@ -8,8 +8,11 @@ from app.common.errors import ExternalAPI
 from app.core.project.models import Project
 from app.core.project.services import AbstractProjectService
 from app.core.pull_request.models import PullRequest
+from app.service.postgres.common.settings import PostgresSettings
 
 from .vault import AbstractPullRequestVault
+
+config = PostgresSettings()
 
 
 class AbstractPullRequestService(Protocol):
@@ -54,9 +57,6 @@ class DatabasePullRequestService(AbstractPullRequestService):
             async with ClientSession() as session:
                 async with session.get(
                     url=f"http://217.197.0.155/data/projects/project?id={project_uid}",
-                    headers={
-                        "Authorization": "Bearer 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"
-                    },
                 ) as response:
                     if response.status == 404:
                         raise HTTPException(
@@ -97,7 +97,7 @@ class DatabasePullRequestService(AbstractPullRequestService):
                 async with session.get(
                     url=link + "/pulls?per_page=100&page=1&state=all",
                     headers={
-                        "Authorization": "Bearer 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",
+                        "Authorization": f"Bearer {config.TOKEN}",
                     },
                 ) as response:
                     if response.status != 200:

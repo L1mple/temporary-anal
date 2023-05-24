@@ -8,8 +8,11 @@ from app.common.errors import ExternalAPI
 from app.core.issue.models import Issue
 from app.core.project.models import Project
 from app.core.project.services import AbstractProjectService
+from app.service.postgres.common.settings import PostgresSettings
 
 from .vault import AbstractIssueVault
+
+config = PostgresSettings()
 
 
 class AbstractIssueService(Protocol):
@@ -54,9 +57,6 @@ class DatabaseIssueService(AbstractIssueService):
             async with ClientSession() as session:
                 async with session.get(
                     url=f"http://217.197.0.155/data/projects/project?id={project_uid}",
-                    headers={
-                        "Authorization": "Bearer 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"
-                    },
                 ) as response:
                     if response.status == 404:
                         raise HTTPException(
@@ -82,7 +82,7 @@ class DatabaseIssueService(AbstractIssueService):
         if not issue_from_project:
             await self.fetch_data_from_github(project.links, project_uid=project_uid)
             return await self.vault.read_all(project_uid=project_uid)
-        if datetime.utcnow() - issue_from_project[0].updated_at > timedelta(minutes=5):
+        if datetime.now() - issue_from_project[0].updated_at > timedelta(minutes=5):
             await self.fetch_data_from_github(project.links, project_uid=project_uid)
         return await self.vault.read_all(project_uid=project_uid)
 
@@ -98,7 +98,7 @@ class DatabaseIssueService(AbstractIssueService):
                     async with session.get(
                         url=link + f"/issues?per_page=100&page={page}&state=all",
                         headers={
-                            "Authorization": "Bearer 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",
+                            "Authorization": f"Bearer {config.TOKEN}",
                         },
                     ) as response:
                         if response.status != 200:

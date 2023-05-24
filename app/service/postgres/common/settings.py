@@ -24,6 +24,10 @@ class PostgresSettings(BaseSettings):
         default=5432,
         description="Port of postgres database",
     )
+    TOKEN: str = Field(
+        default=...,
+        description="token github",
+    )
 
     class Config:  # noqa
         env_file = ".env"
